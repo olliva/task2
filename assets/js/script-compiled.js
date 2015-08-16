@@ -56,7 +56,7 @@ function getPopulation(countryOrCity, _ref) {
         return c.name.toLowerCase();
     }));
 
-    if (cityNames.length === 0) {
+    if (cityNames.size === 0) {
         return undefined;
     }
 
@@ -69,22 +69,26 @@ function getPopulation(countryOrCity, _ref) {
 
 var requests = ['/cities', '/populations'];
 
-Promise.all(requests.map(getData2)).then(function (values) {
-    var countryOrCity = prompt('Get population of country/city\nEnter country or city:', '');
+function requestPopulation() {
+    Promise.all(requests.map(getData2)).then(function (values) {
+        var countryOrCity = prompt('Get population of country/city\nEnter country or city:', '');
 
-    if (!countryOrCity) {
-        alert('You haven\'t entered any country/city');
-        return;
-    }
+        if (!countryOrCity) {
+            alert('You haven\'t entered any country/city');
+            return;
+        }
 
-    var population = getPopulation(countryOrCity, values);
-    if (population === undefined) {
-        alert('We haven\'t found any country or city matching ' + countryOrCity);
-    } else {
-        alert('Total population in ' + countryOrCity + ': ' + population);
-    }
-})['catch'](function () {
-    return alert(':(\nSomething went wrong loading population data');
-});
+        var population = getPopulation(countryOrCity, values);
+        if (population === undefined) {
+            alert('We haven\'t found any country or city matching ' + countryOrCity);
+        } else {
+            alert('Total population in ' + countryOrCity + ': ' + population);
+        }
+    })['catch'](function () {
+        return alert(':(\nSomething went wrong loading population data');
+    });
+}
+requestPopulation();
+document.getElementById('get-population').addEventListener('click', requestPopulation);
 
 //# sourceMappingURL=script-compiled.js.map
